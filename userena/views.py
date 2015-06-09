@@ -562,7 +562,7 @@ def email_change(request, username, email_form=ChangeEmailForm,
                                             extra_context=extra_context)(request)
 
 @secure_required
-@permission_required_or_403('change_user', (get_user_model(), 'username', 'username'))
+@permission_required_or_403('change_user', (get_user_model(), 'id', 'username'))
 def password_change(request, username, template_name='userena/password_form.html',
                     pass_form=PasswordChangeForm, success_url=None, extra_context=None):
     """ Change password of user.
@@ -602,7 +602,7 @@ def password_change(request, username, template_name='userena/password_form.html
 
     """
     user = get_object_or_404(get_user_model(),
-                             username__iexact=username)
+                             id__iexact=username)
 
     form = pass_form(user=user)
 
@@ -626,7 +626,7 @@ def password_change(request, username, template_name='userena/password_form.html
     return ExtraContextTemplateView.as_view(template_name=template_name,
                                             extra_context=extra_context)(request)
 @secure_required
-@permission_required_or_403('change_profile', (get_profile_model(), 'user__username', 'username'))
+@permission_required_or_403('change_profile', (get_profile_model(), 'user__id', 'username'))
 def profile_edit(request, username, edit_profile_form=EditProfileForm,
                  template_name='userena/profile_form.html', success_url=None,
                  extra_context=None, **kwargs):
@@ -671,7 +671,7 @@ def profile_edit(request, username, edit_profile_form=EditProfileForm,
         Instance of the ``Profile`` that is edited.
 
     """
-    user = get_object_or_404(get_user_model(), username__iexact=username)
+    user = get_object_or_404(get_user_model(), id__iexact=username)
 
     profile = get_user_profile(user=user)
 
